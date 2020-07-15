@@ -1,0 +1,140 @@
+<html>
+
+<head>
+  <link rel="stylesheet" href="//unpkg.com/bootstrap@4/dist/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Alegreya+Sans+SC:100&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Alegreya+Sans+SC:100|Noto+Sans+KR&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/shards-ui@latest/dist/css/shards.min.css">
+  <link rel="stylesheet" href="file.css">
+  <title>Memorial People - Media</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+</head>
+
+<body id="page-top" style="background-color: #292929;">
+  <div class="chat_wrap">
+    <nav class="navbar navbar-expand-lg navbar-light bg-warning">
+      <img src="favicon.png" alt="" style="border-radius: 20%;" /> &nbsp;&nbsp;
+      <a class="navbar-brand" href="#">Memorial People</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/notice">Notice</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/">Memorial</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Media Memorial</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Suggest </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-toggle="modal" data-target="#exampleModal">Login Admin </a>
+          </li>
+          <% if(session.admin == "1"){ %>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><%= session.name %></a>
+          </li>
+          <% } %>
+        </ul>
+      </div>
+    </nav> <br /><br /><br />
+
+    <!-- Page Content -->
+    <div class="container" style="background-color: #292929;">
+      <div class="row">
+
+
+      <div class="col-md-12" style="margin-bottom: 20px;">
+        <div class="card border-0 shadow text-dark text-center">
+          <div class="card-body">
+
+            <form id="file-upload-form" class="uploader" action="/media" method="POST" enctype="multipart/form-data">
+              <input id="name" type="text" name="name" class="form-control input-lg" style="width: 100%;" placeholder="당신의 이름" required/><br />
+              <input id="title" type="text" name="title" class="form-control input-lg" style="width: 100%;" placeholder="한줄 응원글" required/><br /><br />
+
+              <input id="file-upload" type="file" name="filetoupload" accept="image/*" required />
+            
+              <label for="file-upload" id="file-drag">
+                <img id="file-image" src="#" alt="Preview" class="hidden">
+                <div id="start">
+                  <i class="fa fa-download" aria-hidden="true"></i>
+                  <div>Select a file or drag here</div>
+                  <div id="notimage" class="hidden">Please select an Media</div>
+                  <span id="file-upload-btn" class="btn btn-primary">Select a file</span>
+                </div>
+                <div id="response" class="hidden">
+                  <div id="messages"></div>
+                  <button id="file-upload-btn" type="submit" class="btn btn-primary">Upload</button>
+                </div>
+              </label>
+            </form>
+
+          </div>
+        </div>
+      </div>
+
+        <% for(var i = 0; i < rows.length; i++) { %>
+
+        <div class="col-md-12" style="margin-bottom: 20px;">
+          <div class="card border-0 shadow text-dark text-center">
+            <div class="card-body">
+              <h3><%= rows[i].title %></h3>
+              <hr />
+              <% if(rows[i].extension == ".mp4" || rows[i].extension == ".aiv" || rows[i].extension == ".mkv" || rows[i].extension == ".mov") { %>
+                <video oncontextmenu="return false;" id="myVideo" width="640" controls autoplay loop>
+                  <source src="uploads/<%= rows[i].img_name %>" type="video/mp4">
+                </video>
+              <% } else { %>  
+                <img src="uploads/<%= rows[i].img_name %>" alt="<%= rows[i].idx %>" style="width: auto; height: auto; max-width: 55%; max-height: 55%;"/>
+              <% } %>
+                <hr />
+              <%= rows[i].created %>에 <%= rows[i].wtname %>님이 작성함.
+            </div>
+          </div>
+        </div>
+
+        <% } %>
+
+        <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+      </div>
+
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Login Admin Account.</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form class="form" action="/loginAdmin" method="POST">
+                <input class="form-control input-lg" name="id" placeholder="ID" type="text" required> <br />
+                <input class="form-control input-lg" name="pwd" placeholder="Password" type="password" required>
+                <div class="modal-footer">
+                  <button class="btn btn-lg btn-success" style="width:100%;" type="submit" required>Login</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bootstrap core JavaScript -->
+        <script src='//unpkg.com/jquery@3/dist/jquery.min.js'></script>
+        <script src='//unpkg.com/popper.js@1/dist/umd/popper.min.js'></script>
+        <script src='//unpkg.com/bootstrap@4/dist/js/bootstrap.min.js'></script>
+
+        <script src="file.js"></script>
+
+</body>
+
+</html>
