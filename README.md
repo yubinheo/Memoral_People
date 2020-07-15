@@ -3,7 +3,7 @@
 Memorial People is a website developed with the aim of fostering gratitude   
 for many meritorious people who sacrificed themselves for Korea.      
 
-The "Sewol incident" incident, which has long been mentioned to many,   
+The "Sewol incident", which has long been mentioned to many,   
 has given us a lot of enlightenment.   
    
 It's a site that was created to express our gratitude to the victims who have experienced such things.
